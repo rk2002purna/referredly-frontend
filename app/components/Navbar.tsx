@@ -1,6 +1,10 @@
+'use client';
 import Link from 'next/link';
+import { useState } from 'react';
+import LoginModal from './LoginModal';
 
 const Navbar = () => {
+  const [loginOpen, setLoginOpen] = useState(false);
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,18 +29,19 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-            <Link href="/login" className="text-blue-600 hover:text-blue-700">
-              Log In
-            </Link>
-            <Link
-              href="/signup"
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-            >
+            <Link href="/signup" className="text-blue-600 hover:text-blue-700">
               Sign Up
             </Link>
+            <button
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              onClick={() => setLoginOpen(true)}
+            >
+              Log In
+            </button>
           </div>
         </div>
       </div>
+      {loginOpen && <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />}
     </nav>
   );
 };
