@@ -16,7 +16,7 @@ import {
 
 const navItems = [
   { name: 'Dashboard', href: '#', icon: HomeIcon },
-  { name: 'My Job Posts', href: '#', icon: BriefcaseIcon },
+  { name: 'My Job Posts', href: '/dashboard/employee/my-job-posts', icon: BriefcaseIcon },
   { name: 'Referral Requests', href: '#', icon: UserGroupIcon },
   { name: 'My Referrals', href: '#', icon: UserGroupIcon },
 ];
@@ -113,7 +113,7 @@ const EmployeeDashboard: FC = () => {
           </div>
         </header>
         {/* Desktop Header */}
-        <header className="hidden lg:flex justify-between items-center px-8 py-6 bg-white shadow-md">
+        <header className="hidden lg:flex justify-between items-center px-8 py-4 bg-white shadow-md">
           <div>
             <h1 className="text-xl font-semibold">Welcome, Michael</h1>
           </div>
