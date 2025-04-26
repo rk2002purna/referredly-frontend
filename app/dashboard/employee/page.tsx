@@ -1,16 +1,17 @@
 'use client';
-import { FC, useState } from 'react';
+import { FC, useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import {
   HomeIcon,
   BriefcaseIcon,
   UserGroupIcon,
-  Cog6ToothIcon,
-  ArrowLeftOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  Cog6ToothIcon,
+  ArrowLeftOnRectangleIcon,
+  UserIcon,
 } from '@heroicons/react/24/outline';
 
 const navItems = [
@@ -18,12 +19,27 @@ const navItems = [
   { name: 'My Job Posts', href: '#', icon: BriefcaseIcon },
   { name: 'Referral Requests', href: '#', icon: UserGroupIcon },
   { name: 'My Referrals', href: '#', icon: UserGroupIcon },
-  { name: 'Settings', href: '#', icon: Cog6ToothIcon },
 ];
 
 const EmployeeDashboard: FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    if (dropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownOpen]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -58,15 +74,6 @@ const EmployeeDashboard: FC = () => {
             </Link>
           ))}
         </nav>
-        <div className={`flex-shrink-0 flex p-4 ${sidebarCollapsed ? 'justify-center px-2' : ''}`}>
-          <button
-            onClick={() => console.log('Logout clicked')}
-            className={`flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-gray-900 w-full ${sidebarCollapsed ? 'justify-center' : ''}`}
-          >
-            <ArrowLeftOnRectangleIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-            <span className={`${sidebarCollapsed ? 'hidden lg:block' : 'inline'} transition-all duration-200`}>Logout</span>
-          </button>
-        </div>
       </aside>
 
       {/* Main Content */}
@@ -78,12 +85,30 @@ const EmployeeDashboard: FC = () => {
           </button>
           <div className="flex items-center space-x-4">
             <span className="text-green-700 bg-green-100 px-3 py-1 rounded-full text-xs font-medium">Verified Employee</span>
-            <div className="flex items-center space-x-2">
-              <span className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lg font-bold text-blue-700">M</span>
-              <div className="flex flex-col">
-                <span className="font-medium text-gray-900">Michael Thompson</span>
-                <span className="text-xs text-gray-500">Senior Engineer at Google</span>
-              </div>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen((open) => !open)}
+                className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lg font-bold text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="User menu"
+              >
+                M
+              </button>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                  <Link href="#" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                    <UserIcon className="h-5 w-5 mr-2 text-blue-600" /> Profile
+                  </Link>
+                  <Link href="#" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                    <Cog6ToothIcon className="h-5 w-5 mr-2 text-blue-600" /> Settings
+                  </Link>
+                  <button
+                    onClick={() => console.log('Logout clicked')}
+                    className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    <ArrowLeftOnRectangleIcon className="h-5 w-5 mr-2 text-blue-600" /> Logout
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </header>
@@ -94,12 +119,30 @@ const EmployeeDashboard: FC = () => {
           </div>
           <div className="flex items-center space-x-4">
             <span className="text-green-700 bg-green-100 px-3 py-1 rounded-full text-xs font-medium">Verified Employee</span>
-            <div className="flex items-center space-x-2">
-              <span className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lg font-bold text-blue-700">M</span>
-              <div className="flex flex-col">
-                <span className="font-medium text-gray-900">Michael Thompson</span>
-                <span className="text-xs text-gray-500">Senior Engineer at Google</span>
-              </div>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen((open) => !open)}
+                className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lg font-bold text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="User menu"
+              >
+                M
+              </button>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                  <Link href="#" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                    <UserIcon className="h-5 w-5 mr-2 text-blue-600" /> Profile
+                  </Link>
+                  <Link href="#" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                    <Cog6ToothIcon className="h-5 w-5 mr-2 text-blue-600" /> Settings
+                  </Link>
+                  <button
+                    onClick={() => console.log('Logout clicked')}
+                    className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    <ArrowLeftOnRectangleIcon className="h-5 w-5 mr-2 text-blue-600" /> Logout
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </header>

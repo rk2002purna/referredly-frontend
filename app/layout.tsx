@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth h-full">
       <body className={`${inter.className} h-full`}>
-        <main className="h-full min-h-screen w-full px-4 py-8 md:px-8 lg:px-16">
+        <main className="h-full min-h-screen w-full px-4 py-8 md:px-8 lg:px-1">
           {children}
         </main>
       </body>
